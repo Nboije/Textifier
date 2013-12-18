@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Textifier.iml" filepath="$PROJECT_DIR$/Textifier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Textifier/Textifier-Textifier.iml" filepath="$PROJECT_DIR$/Textifier/Textifier-Textifier.iml" />
+    </modules>
+  </component>
+</project>
+
