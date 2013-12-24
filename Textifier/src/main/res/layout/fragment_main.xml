@@ -19,25 +19,24 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true" />
 
-    <Button
+    <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Preview"
-        android:id="@+id/startPreview"
-        android:layout_marginLeft="24dp"
-        android:layout_marginBottom="25dp"
-        android:layout_alignBottom="@+id/surfaceView"
+        android:text="Preview"
+        android:id="@+id/togglePreview"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:checked="false"
+        android:onClick="onToggleClicked"/>
 
     <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop Preview"
-        android:id="@+id/stopPreview"
-        android:layout_alignTop="@+id/startPreview"
-        android:layout_alignRight="@+id/surfaceView"
-        android:layout_alignEnd="@+id/surfaceView"
-        android:layout_marginRight="33dp" />
+        android:text="Capture"
+        android:id="@+id/takePicture"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="onCaptureClicked"/>
 
 </RelativeLayout>

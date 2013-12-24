@@ -1,17 +1,14 @@
 package com.example.textifier;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.IOException;
 
@@ -25,8 +22,6 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback{
     private Camera camera;
     private SurfaceHolder surfaceHolder;
     private SurfaceView surfaceView;
-
-    private Button startPreview, stopPreview;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -43,46 +38,61 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback{
             surfaceHolder.setFormat(PixelFormat.RGB_565);
 
         }
-        startPreview = (Button)findViewById(R.id.startPreview);
-        stopPreview = (Button)findViewById(R.id.stopPreview);
+    }
 
-        startPreview.setOnClickListener(new Button.OnClickListener() {
 
-            @Override
-            public void onClick(View v){
+    /**
+     * The toggle button controls the camera preview, either on or off. If it is turned off it will
+     * freeze the latest frame from the camera
+     * @param view is the ToggleButton as view
+     */
+    public void onToggleClicked(View view){
 
-                camera = Camera.open();
+        //The toggle button has been set to ON, start the camera
+        if(((ToggleButton) view).isChecked()){
 
-                /*
-                Camera.Parameters params = camera.getParameters();
-                params.set("orientation", "portrait");
-                camera.setParameters(params);
-                Configuration.
-                */
-                if(camera != null){
-                    try{
-                        camera.setDisplayOrientation(90);
-                        camera.setPreviewDisplay(surfaceHolder);
-                        camera.startPreview();
-                    }catch(IOException e){
-                        e.printStackTrace();
-                    }
+            //Get camera
+            camera = Camera.open();
+
+            if(camera != null){
+                try{
+                    camera.setDisplayOrientation(90);
+                    camera.setPreviewDisplay(surfaceHolder);
+                    camera.startPreview();
+                }catch(IOException e){
+                    e.printStackTrace();
                 }
             }
-
-        });
-
-        stopPreview.setOnClickListener(new Button.OnClickListener(){
-
-            @Override
-            public void onClick(View v){
-                if(camera != null){
-                    camera.stopPreview();
-                    camera.release();
-                    camera = null;
-                }
+        }
+        else{ //The toggle button has been set to OFF, turn off the camera
+            if(camera != null){
+                camera.stopPreview();
+                camera.release();
+                camera = null;
             }
-        });
+        }
+    }
+
+    public void onCaptureClicked(View view){
+        if(camera != null){
+            //Toast.makeText(getApplicationContext(),  "You took a picture!", Toast.LENGTH_LONG).show();
+            camera.takePicture(null, null, new PhotoHandler(getApplicationContext()));
+
+
+            ToggleButton tB = ((ToggleButton) findViewById(R.id.togglePreview));
+
+
+            if(tB.isChecked()){
+
+                //The camera will stop preview when a picture is taken, so let's release it
+                camera.stopPreview();
+                camera.release();
+                camera = null;
+
+                //The preview toggle button is reset to off since the takePicture will stop the preview
+                tB.setChecked(false);
+            }
+        }
     }
 
     @Override
