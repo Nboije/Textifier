@@ -77,18 +77,12 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
     }
 
     public void onCaptureClicked(View view){
-        if(camera != null){
+        boolean cameraActive = (camera != null) && ((ToggleButton)findViewById(R.id.togglePreview)).isChecked();
+        if(cameraActive){
             PhotoHandler ph = new PhotoHandler(getApplicationContext());
             camera.takePicture(null, null, ph);
-
-            ToggleButton tB = ((ToggleButton) findViewById(R.id.togglePreview));
-
-
-            if(tB.isChecked()){
-                //The preview toggle button is reset to off since the takePicture will stop the preview
-                tB.setChecked(false);
-            }
         }
+
     }
 
     public void onClickedView(View view){
@@ -116,16 +110,7 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        /*
-        camera = Camera.open();
 
-        try {
-            camera.setPreviewDisplay(surfaceHolder);
-        } catch (IOException exception) {
-            camera.release();
-            camera = null;
-        }
-        */
     }
 
     @Override
@@ -135,10 +120,6 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        /*
-        camera.stopPreview();
-        camera.release();
-        camera = null;
-        */
+
     }
 }
