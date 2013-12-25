@@ -1,8 +1,11 @@
 package com.example.textifier;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.media.MediaActionSound;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,7 +20,7 @@ import java.io.IOException;
  * Comments:
  * Starting on something to use for handling the camera. This is ongoing and untested.
  */
-public class CameraHandler extends Activity implements SurfaceHolder.Callback{
+public class CameraHandler extends Activity implements SurfaceHolder.Callback, Camera.AutoFocusCallback{
 
     private Camera camera;
     private SurfaceHolder surfaceHolder;
@@ -56,7 +59,7 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback{
 
             if(camera != null){
                 try{
-                    camera.setDisplayOrientation(90);
+                    camera.setDisplayOrientation(90); // Portrait, there should be another way to choose portrait besides setting 90
                     camera.setPreviewDisplay(surfaceHolder);
                     camera.startPreview();
                 }catch(IOException e){
@@ -75,23 +78,39 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback{
 
     public void onCaptureClicked(View view){
         if(camera != null){
-            //Toast.makeText(getApplicationContext(),  "You took a picture!", Toast.LENGTH_LONG).show();
-            camera.takePicture(null, null, new PhotoHandler(getApplicationContext()));
-
+            PhotoHandler ph = new PhotoHandler(getApplicationContext());
+            camera.takePicture(null, null, ph);
 
             ToggleButton tB = ((ToggleButton) findViewById(R.id.togglePreview));
 
 
             if(tB.isChecked()){
-
-                //The camera will stop preview when a picture is taken, so let's release it
-                camera.stopPreview();
-                camera.release();
-                camera = null;
-
                 //The preview toggle button is reset to off since the takePicture will stop the preview
                 tB.setChecked(false);
             }
+        }
+    }
+
+    public void onClickedView(View view){
+
+        if(camera != null){ // Making sure camera has started preview
+
+            //Make sure the device has auto focus capabilities
+            if(camera.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_AUTO) ||
+                    camera.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_MACRO)){
+
+                camera.autoFocus(this);
+
+            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onAutoFocus(boolean b, Camera camera) {
+        MediaActionSound mas = new MediaActionSound();
+        if(b){ // Auto focus success
+            mas.play(MediaActionSound.FOCUS_COMPLETE);
         }
     }
 

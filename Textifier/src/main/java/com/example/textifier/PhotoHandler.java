@@ -1,7 +1,10 @@
 package com.example.textifier;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.hardware.Camera;
+import android.media.MediaActionSound;
+import android.os.Build;
 import android.widget.Toast;
 
 /**
@@ -16,9 +19,21 @@ public class PhotoHandler implements Camera.PictureCallback {
         context = con;
     }
 
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onPictureTaken(byte[] bytes, Camera camera) {
+        MediaActionSound mas = new MediaActionSound();
+        mas.play(MediaActionSound.SHUTTER_CLICK);
+
+        //The camera will stop preview when a picture is taken, so let's release it
+        camera.stopPreview();
+        camera.release();
+        camera = null;
 
         //TODO: The picture needs to be saved to memory
     }
+
+
+
 }
