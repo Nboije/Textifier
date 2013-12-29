@@ -11,7 +11,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import java.io.IOException;
 
@@ -29,6 +28,9 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.fragment_main);
 
         surfaceView = (SurfaceView)findViewById(R.id.surfaceView);
@@ -43,46 +45,12 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
         }
     }
 
-
-    /**
-     * The toggle button controls the camera preview, either on or off. If it is turned off it will
-     * freeze the latest frame from the camera
-     * @param view is the ToggleButton as view
-     */
-    public void onToggleClicked(View view){
-
-        //The toggle button has been set to ON, start the camera
-        if(((ToggleButton) view).isChecked()){
-
-            //Get camera
-            camera = Camera.open();
-
-            if(camera != null){
-                try{
-                    camera.setDisplayOrientation(90); // Portrait, there should be another way to choose portrait besides setting 90
-                    camera.setPreviewDisplay(surfaceHolder);
-                    camera.startPreview();
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        else{ //The toggle button has been set to OFF, turn off the camera
-            if(camera != null){
-                camera.stopPreview();
-                camera.release();
-                camera = null;
-            }
-        }
-    }
-
     public void onCaptureClicked(View view){
-        boolean cameraActive = (camera != null) && ((ToggleButton)findViewById(R.id.togglePreview)).isChecked();
+        boolean cameraActive = (camera != null);// && ((ToggleButton)findViewById(R.id.togglePreview)).isChecked();
         if(cameraActive){
             PhotoHandler ph = new PhotoHandler(getApplicationContext());
             camera.takePicture(null, null, ph);
         }
-
     }
 
     public void onClickedView(View view){
@@ -110,7 +78,18 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        //Get camera
+        camera = Camera.open();
 
+        if(camera != null){
+            try{
+                camera.setDisplayOrientation(90); // Portrait, there should be another way to choose portrait besides setting 90
+                camera.setPreviewDisplay(surfaceHolder);
+                camera.startPreview();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -120,6 +99,10 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
+        if(camera != null){
+            camera.stopPreview();
+            camera.release();
+            camera = null;
+        }
     }
 }

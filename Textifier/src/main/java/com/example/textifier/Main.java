@@ -22,7 +22,6 @@ public class Main extends ActionBarActivity {
                     .commit();
         }
 
-        //cameraHandler = new CameraHandler(getApplicationContext(), (SurfaceView)findViewById(R.id.surfaceView));
     }
 
 
@@ -57,7 +56,7 @@ public class Main extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.startup_main, container, false);
             return rootView;
         }
     }
