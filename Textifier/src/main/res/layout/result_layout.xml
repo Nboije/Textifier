@@ -3,12 +3,70 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ImageView
+    <ToggleButton
+        android:layout_width="74dp"
+        android:layout_height="wrap_content"
+        android:text="Blue"
+        android:id="@+id/blueToggleButton"
+        android:layout_gravity="bottom"
+        android:checked="false"
+        android:onClick="onBlueClicked"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/greenToggleButton" />
+
+    <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Red"
+        android:id="@+id/redToggleButton"
+        android:layout_gravity="bottom"
+        android:checked="false"
+        android:onClick="onRedClicked"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/greenToggleButton" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Green"
+        android:id="@+id/greenToggleButton"
+        android:layout_gravity="bottom"
+        android:checked="false"
+        android:onClick="onGreenClicked"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="400dp"
         android:id="@+id/resultImageView"
+        android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R"
+        android:id="@+id/RTextView"
+        android:layout_above="@+id/blueToggleButton"
+        android:layout_alignLeft="@+id/redToggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="G"
+        android:id="@+id/GTextView"
+        android:layout_above="@+id/redToggleButton"
+        android:layout_toRightOf="@+id/redToggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B"
+        android:id="@+id/BTextView"
+        android:layout_above="@+id/blueToggleButton"
+        android:layout_toRightOf="@+id/greenToggleButton" />
+
 </RelativeLayout>
