@@ -69,4 +69,33 @@
         android:layout_above="@+id/blueToggleButton"
         android:layout_toRightOf="@+id/greenToggleButton" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="custom"
+        android:id="@+id/custom"
+        android:onClick="customFilter"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/blueToggleButton" />
+
+    <SeekBar
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/levelSeeker"
+        android:layout_above="@+id/GTextView"
+        android:layout_alignRight="@+id/custom"
+        android:max="255"
+        android:progress="1"
+        android:indeterminate="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="seekValue"
+        android:id="@+id/seekValue"
+        android:layout_below="@+id/levelSeeker"
+        android:layout_alignParentLeft="true" />
+
 </RelativeLayout>
