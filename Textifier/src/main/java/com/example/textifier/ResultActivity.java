@@ -4,7 +4,12 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -26,7 +31,7 @@ public class ResultActivity extends Activity {
 
     boolean red, green, blue;
 
-    int filterLevel = 0;
+    int filterLevel = 10;
 
     SeekBar levelSeeker;
 
@@ -36,10 +41,6 @@ public class ResultActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
-
-        levelSeeker = (SeekBar)findViewById(R.id.seekValue);
-
-
 
         red = false;
         green = false;
@@ -52,6 +53,7 @@ public class ResultActivity extends Activity {
 
             Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
 
+            levelSeeker = (SeekBar)findViewById(R.id.levelSeeker);
 
             imageView = (ImageView)findViewById(R.id.resultImageView);
 
@@ -70,7 +72,6 @@ public class ResultActivity extends Activity {
                     filterLevel = i;
                     TextView tv = (TextView)findViewById(R.id.seekValue);
                     tv.setText("" + i);
-                    tv.setText("poo", TextView.BufferType.EDITABLE);
                 }
 
                 @Override
@@ -80,12 +81,12 @@ public class ResultActivity extends Activity {
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    Toast.makeText(getApplicationContext(), "Ended seek: " + seekBar.getProgress(), Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(), "Ended seek: " + seekBar.getProgress(), Toast.LENGTH_LONG).show();
                 }
             });
         }
         else {
-            Toast.makeText(getApplicationContext(), "Seekbar null ", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Seekbar null ", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -128,6 +129,18 @@ public class ResultActivity extends Activity {
         applyColorFilter(imageView, color);
     }
 
+    private void grayScaleFilter(Bitmap bm){
+        Canvas c = new Canvas(bm);
+        Paint p = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter cmcf = new ColorMatrixColorFilter(cm);
+
+        p.setColorFilter(cmcf);
+
+        imageView.draw(c);
+    }
+
     public void customFilter(View v){
         int color, r,g,b;
 
@@ -147,14 +160,14 @@ public class ResultActivity extends Activity {
             for(int x = 0; x < bmp.getWidth(); x++){
 
                 color = nBmp.getPixel(x,y);
-                r = (byte)(color >> 24);
-                g = (byte)(color >> 16);
-                b = (byte)(color >> 8);
+                r = (byte)(color >> 16);
+                g = (byte)(color >> 8);
+                b = (byte)(color);
 
-                int avg = (r+g+b)/3;
+                float avg = (float)((r+g+b)/3.0);
 
-                if(avg > level){
-                    color = 0xffffffff;
+                if(avg < level){
+                    color = 0xff00ff00;
                     nBmp.setPixel(x, y, color);
                 }
             }
