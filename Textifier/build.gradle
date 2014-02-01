@@ -35,4 +35,6 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:+'
+    compile files('build/libs/Jama-1.0.3.jar')
+    compile files('build/libs/JMatIO/lib/jamtio.jar')
 }
