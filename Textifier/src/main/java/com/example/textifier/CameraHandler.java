@@ -2,6 +2,7 @@ package com.example.textifier;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.media.MediaActionSound;
@@ -49,18 +50,32 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
         boolean cameraActive = (camera != null);// && ((ToggleButton)findViewById(R.id.togglePreview)).isChecked();
         if(cameraActive){
             PhotoHandler ph = new PhotoHandler(getApplicationContext());
+
+
             camera.takePicture(null, null, ph);
+
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void onClickedView(View view){
 
         if(camera != null){ // Making sure camera has started preview
+            Camera.Parameters p = camera.getParameters();
+            if(getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)){
+
+                p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                Toast.makeText(getApplicationContext(), "Using flash " + p.getFlashMode(), Toast.LENGTH_SHORT).show();
+                camera.setParameters(p);
+
+            }
 
             //Make sure the device has auto focus capabilities
             if(camera.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_AUTO) ||
                     camera.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_MACRO)){
 
+                p.setAutoExposureLock(false);
+                p.setAutoWhiteBalanceLock(false);
                 camera.autoFocus(this);
 
             }

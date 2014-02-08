@@ -11,6 +11,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -129,6 +130,7 @@ public class ResultActivity extends Activity {
         applyColorFilter(imageView, color);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void grayScaleFilter(Bitmap bm){
         Canvas c = new Canvas(bm);
         Paint p = new Paint();
@@ -138,18 +140,22 @@ public class ResultActivity extends Activity {
 
         p.setColorFilter(cmcf);
 
-        imageView.draw(c);
+        int x = (int)imageView.getX();
+        int y = (int)imageView.getY();
+        c.drawBitmap(bm, x, y, p);
+        imageView.setImageDrawable(new BitmapDrawable(getResources(), bm));
+        //imageView.draw(c);
     }
 
     public void customFilter(View v){
         int color, r,g,b;
 
         if(!imageView.isDrawingCacheEnabled()){
-            Toast.makeText(getApplicationContext(), "Drawing cache is disabled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Drawing cache was disabled", Toast.LENGTH_SHORT).show();
             imageView.setDrawingCacheEnabled(true);
         }
-
-        imageView.setImageBitmap(levelFilter(imageView.getDrawingCache(), filterLevel));
+        grayScaleFilter(imageView.getDrawingCache());
+        //imageView.setImageBitmap(levelFilter(imageView.getDrawingCache(), filterLevel));
     }
 
     private Bitmap levelFilter(Bitmap bmp, int level){

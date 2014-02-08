@@ -72,30 +72,30 @@
       <sourceFolder url="file://$MODULE_DIR$/src/instrumentTest/res" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/instrumentTest/resources" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build/apk" />
-      <excludeFolder url="file://$MODULE_DIR$/build/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/bundles" />
       <excludeFolder url="file://$MODULE_DIR$/build/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/dependency-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/incremental" />
-      <excludeFolder url="file://$MODULE_DIR$/build/libs" />
       <excludeFolder url="file://$MODULE_DIR$/build/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 18 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
-    <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
-    <orderEntry type="module-library">
+    <orderEntry type="library" exported="" name="support-v4-19.0.0" level="project" />
+    <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71900.aar" level="project" />
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/build/libs/Jama-1.0.3.jar!/" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="file://$MODULE_DIR$/build/libs/JMatIO/doc" />
+        </JAVADOC>
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/build/libs/JMatIO/lib/jamtio.jar!/" />

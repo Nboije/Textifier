@@ -1,7 +1,6 @@
 package com.example.textifier;
 
 import android.app.Activity;
-
 import com.jmatio.io.MatFileReader;
 
 import java.io.File;
@@ -23,7 +22,7 @@ public class CreateSubSpacesActivity extends Activity {
         File newFile = null;
         URL url = null;
         try{
-            url = new URL("file://android_asset/DataSet.mat");
+            url = new URL("file://android_asset/dataset.mat");
         }
         catch( MalformedURLException e)
         {
