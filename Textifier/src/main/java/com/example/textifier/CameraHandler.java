@@ -8,6 +8,7 @@ import android.hardware.Camera;
 import android.media.MediaActionSound;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.io.IOException;
  * Comments:
  * Starting on something to use for handling the camera. This is ongoing and untested.
  */
-public class CameraHandler extends Activity implements SurfaceHolder.Callback, Camera.AutoFocusCallback{
+public class CameraHandler extends FragmentActivity implements SurfaceHolder.Callback, Camera.AutoFocusCallback{
 
     private Camera camera;
     private SurfaceHolder surfaceHolder;
@@ -66,7 +67,7 @@ public class CameraHandler extends Activity implements SurfaceHolder.Callback, C
 
                 p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 Toast.makeText(getApplicationContext(), "Using flash " + p.getFlashMode(), Toast.LENGTH_SHORT).show();
-                camera.setParameters(p);
+               // camera.setParameters(p);
 
             }
 

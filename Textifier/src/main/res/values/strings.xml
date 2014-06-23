@@ -4,5 +4,9 @@
     <string name="app_name">Textifier</string>
     <string name="hello_world">Hello Textifier!</string>
     <string name="action_settings">Settings</string>
+    <string name="filename">File name</string>
+    <string name="savefileheader">Save picture</string>
+    <string name="savefile">Save</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
