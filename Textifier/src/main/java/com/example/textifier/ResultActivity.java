@@ -11,17 +11,17 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.jmatio.io.MatFileReader;
 
 /**
  * Created by simon on 12/30/13.
@@ -36,8 +36,6 @@ public class ResultActivity extends Activity {
     int filterLevel = 10;
 
     SeekBar levelSeeker;
-
-    Bitmap picture;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -55,13 +53,13 @@ public class ResultActivity extends Activity {
 
             setContentView(R.layout.result_layout);
 
-            picture = BitmapFactory.decodeByteArray(image, 0, image.length);
+            Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
 
             levelSeeker = (SeekBar)findViewById(R.id.levelSeeker);
 
             imageView = (ImageView)findViewById(R.id.resultImageView);
 
-            imageView.setImageBitmap(picture);
+            imageView.setImageBitmap(bmp);
             imageView.setRotation((float)90.0);
         }
         else {
@@ -85,7 +83,6 @@ public class ResultActivity extends Activity {
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    imageView.setImageBitmap(levelFilter(picture, filterLevel));
                     Toast.makeText(getApplicationContext(), "Ended seek: " + seekBar.getProgress(), Toast.LENGTH_LONG).show();
                 }
             });
@@ -102,9 +99,11 @@ public class ResultActivity extends Activity {
     }
 
     public void onRedClicked(View view){
-        ToggleButton tb = (ToggleButton) view;
+        /*ToggleButton tb = (ToggleButton) view;
         red = tb.isChecked();
-        updateColorFilter();
+        updateColorFilter();*/
+        CreateSubSpacesActivity subspace = new CreateSubSpacesActivity();
+        subspace.readMatFile(getApplicationContext());
     }
 
     public void onGreenClicked(View view){
@@ -134,7 +133,6 @@ public class ResultActivity extends Activity {
         applyColorFilter(imageView, color);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void grayScaleFilter(Bitmap bm){
         Canvas c = new Canvas(bm);
         Paint p = new Paint();
@@ -144,63 +142,23 @@ public class ResultActivity extends Activity {
 
         p.setColorFilter(cmcf);
 
-        int x = (int)imageView.getX();
-        int y = (int)imageView.getY();
-        c.drawBitmap(bm, x, y, p);
-        imageView.setImageDrawable(new BitmapDrawable(getResources(), bm));
-        //imageView.draw(c);
+        imageView.draw(c);
     }
 
     public void customFilter(View v){
         int color, r,g,b;
 
         if(!imageView.isDrawingCacheEnabled()){
-            Toast.makeText(getApplicationContext(), "Drawing cache was disabled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Drawing cache is disabled", Toast.LENGTH_SHORT).show();
             imageView.setDrawingCacheEnabled(true);
         }
 
-        //grayScaleFilter(imageView.getDrawingCache());
-        imageView.setImageBitmap(threshFilter(imageView.getDrawingCache()));
-        //imageView.setImageBitmap(levelFilter(imageView.getDrawingCache(), filterLevel));
+        imageView.setImageBitmap(levelFilter(imageView.getDrawingCache(), filterLevel));
     }
 
     private Bitmap levelFilter(Bitmap bmp, int level){
-        Bitmap nBmp = bmp.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap nBmp = bmp;
         int color, r, g, b;
-        //float sum = 0;
-
-        for(int y = 0; y < bmp.getHeight(); y++){
-            for(int x = 0; x < bmp.getWidth(); x++){
-
-                color = nBmp.getPixel(x,y);
-                r = (color >> 16) & 0xff;
-                g = (color >> 8) & 0xff;
-                b = (color) & 0xff;
-
-                float sum = (float)((r+g+b)/3.0);
-
-                if(sum < level){
-                    color = 0xff000000;
-                    nBmp.setPixel(x, y, color);
-                }
-                else {
-                    color = 0xffffffff;
-                    Log.i("Settings", "x: " + x + " y:" + y + " color:" + color);
-                    nBmp.setPixel(x, y, color);
-                }
-
-            }
-        }
-
-
-        return nBmp;
-    }
-
-    private Bitmap threshFilter(Bitmap bmp)
-    {
-        Bitmap nBmp = bmp.copy(Bitmap.Config.ARGB_8888, true);
-        int color, r, g, b, avg;
-        float sum = 0;
 
         for(int y = 0; y < bmp.getHeight(); y++){
             for(int x = 0; x < bmp.getWidth(); x++){
@@ -210,15 +168,14 @@ public class ResultActivity extends Activity {
                 g = (byte)(color >> 8);
                 b = (byte)(color);
 
-                sum += (float)(r+g+b);
+                float avg = (float)((r+g+b)/3.0);
 
+                if(avg < level){
+                    color = 0xff00ff00;
+                    nBmp.setPixel(x, y, color);
+                }
             }
         }
-
-        avg = (int)(sum / (nBmp.getWidth() * nBmp.getHeight()));
-
-        nBmp = levelFilter(nBmp, avg);
-
 
         return nBmp;
     }

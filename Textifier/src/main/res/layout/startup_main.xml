@@ -24,15 +24,4 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="34dp"
         android:onClick="onStartTextifierClicked"/>
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test picture"
-        android:id="@+id/testPicture"
-        android:layout_below="@+id/startTextifier"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp"
-        android:onClick="onTestPictureClicked"/>
 </RelativeLayout>
